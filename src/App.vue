@@ -1,5 +1,5 @@
 <template>
-  <div @click="finishEdit()">
+  <div>
     <div class="addTodo">
       <input v-model="newTodo" placeholder="Add new todo" />
       <button @click="addTodo">Add</button>
@@ -13,13 +13,13 @@
           id="item-list"
           class="row align-items-center"
         >
-          <li :class="{ completed: todo.completed, show: showAll }">
-            <input
+          <li class="input" :class="{ completed: todo.completed, show: showAll }">
+            <span @click="todo.isEdit = !todo.isEdit"><input
               type="checkbox"
               v-model="todo.completed"
               @click="todo.completed = !todo.completed"
             />{{ todo.title
-            }}<span @click="todo.isEdit = !todo.isEdit">edit</span
+            }}</span
             ><input v-if="todo.isEdit" v-model="todo.title" /><span
               @click="deleteTodo(todo.id)"
               ><font-awesome-icon icon="trash-can"
@@ -29,6 +29,7 @@
       </transition-group>
     </section>
   </div>
+  
 </template>
 
 <script>
@@ -60,6 +61,9 @@ export default {
   },
   created() {},
   methods: {
+       onClickOutside() {
+      console.log("clicked outside");
+    },
     addTodo() {
       this.todos.push({
         id: this.todos.length + 1,
@@ -83,11 +87,9 @@ export default {
       }
     },
     finishEdit() {
-      // let editing=0;
-      // this.todos.map((todo) => (todo.isEdit ? editing++ : null));
-      // if(editing>0){
-      //    this.todos.map((todo) => (todo.isEdit = false));
-      // }
+     console.log('hi')
+         this.todos.map((todo) => (todo.isEdit = false));
+      
     },
   },
   computed: {},
