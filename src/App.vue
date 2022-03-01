@@ -4,7 +4,7 @@
       <input v-model="newTodo" placeholder="Add new todo" />
       <button @click="addTodo">Add</button>
     </div>
-    <button @click="showAll = !showAll">ALL</button>
+    <button @click="showAll = !showAll">{{showAll? 'HIDE' : 'All'}}</button>
     <section class="todos">
       <transition-group name="products" appear>
         <div
@@ -18,9 +18,8 @@
               type="checkbox"
               v-model="todo.completed"
               @click="todo.completed = !todo.completed"
-            />{{ todo.title
-            }}</span
-            ><input v-if="todo.isEdit" v-model="todo.title" /><span
+            /></span
+            ><input :class="{completed:todo.completed, show: showAll}" v-model="todo.title" /><span
               @click="deleteTodo(todo.id)"
               ><font-awesome-icon icon="trash-can"
             /></span>
@@ -29,17 +28,21 @@
       </transition-group>
     </section>
   </div>
-  
+    
 </template>
 
 <script>
 export default {
   data: function () {
+    
     return {
+       models: {
+        base: false,
+        conditional: false,
+      },
+      showAll:false,
       newTodo: "",
       editedTodo: "",
-      showAll: false,
-
       todos: [
         {
           id: 1,
@@ -57,13 +60,10 @@ export default {
     };
   },
   components: {
-    // Navbar
   },
   created() {},
   methods: {
-       onClickOutside() {
-      console.log("clicked outside");
-    },
+     
     addTodo() {
       this.todos.push({
         id: this.todos.length + 1,
@@ -88,8 +88,7 @@ export default {
     },
     finishEdit() {
      console.log('hi')
-         this.todos.map((todo) => (todo.isEdit = false));
-      
+         this.todos.map((todo) => (todo.isEdit = false));    
     },
   },
   computed: {},
@@ -100,12 +99,25 @@ export default {
 li {
   list-style-type: none;
 }
-li.completed {
-  text-decoration: line-through;
-  display: none;
+input{
+  border: none;
+}
+.completed{
+   text-decoration: line-through;
+   display: none;
+}
+.completed.show{
+    display: inline-block;
 }
 
-.completed.show {
-  display: inline-block;
+.ffefd5-box {
+  background-color: #ffefd5;
+  height: 50px;
+  text-align: center;
+}
+
+.c13f10-box {
+  background-color: #c13f10;
+  height: 50px;
 }
 </style>
