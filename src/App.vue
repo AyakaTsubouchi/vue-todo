@@ -1,11 +1,14 @@
 <template>
-  <div>
-    <add-todo
-      @addTodo="addTodo"
-      @toggleShowAll="toggleShowAll"
-      :showAll="showAll"
-    />
-    <todo-list :todos="todos" @deleteTodo="deleteTodo" :showAll="showAll" />
+<h1 class="text-center">Todos: Vue3</h1>
+  <div class="contents">
+    <div>
+      <add-todo
+        @addTodo="addTodo"
+        @toggleShowAll="toggleShowAll"
+        :showAll="showAll"
+      />
+      <todo-list :todos="todos" @deleteTodo="deleteTodo" :showAll="showAll" />
+    </div>
   </div>
 </template>
 
@@ -74,11 +77,13 @@ export default {
 body {
   font-family: "Comforter", cursive;
 }
-#app {
+.contents {
   height: 100vh;
+  max-width: 500px;
+  margin: 0 auto;
   display: flex;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
 }
 li {
   list-style-type: none;
