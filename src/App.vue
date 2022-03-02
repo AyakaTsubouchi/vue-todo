@@ -1,47 +1,22 @@
 <template>
   <div>
-    <div class="addTodo">
-      <input v-model="newTodo" placeholder="Add new todo" />
-      <button @click="addTodo">Add</button>
-    </div>
-    <button @click="showAll = !showAll">{{showAll? 'HIDE' : 'All'}}</button>
-    <section class="todos">
-      <transition-group name="products" appear>
-        <div
-          v-for="todo in todos"
-          :key="todo.id"
-          id="item-list"
-          class="row align-items-center"
-        >
-          <li class="input" :class="{ completed: todo.completed, show: showAll }">
-            <span @click="todo.isEdit = !todo.isEdit"><input
-              type="checkbox"
-              v-model="todo.completed"
-              @click="todo.completed = !todo.completed"
-            /></span
-            ><input :class="{completed:todo.completed, show: showAll}" v-model="todo.title" /><span
-              @click="deleteTodo(todo.id)"
-              ><font-awesome-icon icon="trash-can"
-            /></span>
-          </li>
-        </div>
-      </transition-group>
-    </section>
+    <add-todo
+      @addTodo="addTodo"
+      @toggleShowAll="toggleShowAll"
+      :showAll="showAll"
+    />
+    <todo-list :todos="todos" @deleteTodo="deleteTodo" :showAll="showAll" />
   </div>
-    
 </template>
 
 <script>
+import AddTodo from "@/components/AddTodo";
+import TodoList from "@/components/TodoList";
+
 export default {
   data: function () {
-    
     return {
-       models: {
-        base: false,
-        conditional: false,
-      },
-      showAll:false,
-      newTodo: "",
+      showAll: false,
       editedTodo: "",
       todos: [
         {
@@ -60,17 +35,17 @@ export default {
     };
   },
   components: {
+    AddTodo,
+    TodoList,
   },
   created() {},
   methods: {
-     
-    addTodo() {
+    addTodo(todo) {
       this.todos.push({
         id: this.todos.length + 1,
-        title: this.newTodo,
+        title: todo,
         completed: false,
       });
-      this.newTodo = "";
     },
     deleteTodo(id) {
       for (let i = 0; i < this.todos.length; i++) {
@@ -86,9 +61,8 @@ export default {
         }
       }
     },
-    finishEdit() {
-     console.log('hi')
-         this.todos.map((todo) => (todo.isEdit = false));    
+    toggleShowAll() {
+      this.showAll = !this.showAll;
     },
   },
   computed: {},
@@ -96,28 +70,27 @@ export default {
 </script>
 
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Comforter&display=swap");
+body {
+  font-family: "Comforter", cursive;
+}
+#app {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 li {
   list-style-type: none;
 }
-input{
+input {
   border: none;
 }
-.completed{
-   text-decoration: line-through;
-   display: none;
+.completed {
+  text-decoration: line-through;
+  display: none;
 }
-.completed.show{
-    display: inline-block;
-}
-
-.ffefd5-box {
-  background-color: #ffefd5;
-  height: 50px;
-  text-align: center;
-}
-
-.c13f10-box {
-  background-color: #c13f10;
-  height: 50px;
+.completed.show {
+  display: inline-block;
 }
 </style>
